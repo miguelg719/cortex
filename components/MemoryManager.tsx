@@ -1,25 +1,26 @@
-import type React from "react"
-import { useState } from "react"
-import { useMemory } from "../hooks/useMemory"
-import { MemoryTable } from "./MemoryTable"
-import { InsertMemoryDialog } from "./InsertMemoryDialog"
-import { Input } from "@/components/ui/input"
-import { useToast } from "@/components/ui/use-toast"
-import { Search, Plus } from "lucide-react"
-import { MemoryDetailDialog } from "./MemoryDetailDialog"
-import type { MemoryItem } from "../hooks/useMemory"
-import { Button } from "@/components/ui/button"
-import { MemoryTableSkeleton } from "./MemoryTableSkeleton"
+import type React from 'react'
+import { useState } from 'react'
+import { useMemory } from '../hooks/useMemory'
+import { MemoryTable } from './MemoryTable'
+import { InsertMemoryDialog } from './InsertMemoryDialog'
+import { Input } from '@/components/ui/input'
+import { useToast } from '@/components/ui/use-toast'
+import { Search, Plus } from 'lucide-react'
+import { MemoryDetailDialog } from './MemoryDetailDialog'
+import type { MemoryItem } from '../hooks/useMemory'
+import { Button } from '@/components/ui/button'
+import { MemoryTableSkeleton } from './MemoryTableSkeleton'
 
 interface MemoryManagerProps {
   title: string
-  storageKey: "shortTermMemory" | "longTermMemory"
+  storageKey: 'shortTermMemory' | 'longTermMemory'
 }
 
 export const MemoryManager: React.FC<MemoryManagerProps> = ({ title, storageKey }) => {
-  const memoryType = storageKey === "longTermMemory" ? "long-term" : "short-term"
-  const { memory, insertMemory, updateMemory, deleteMemory, searchMemory, isLoading } = useMemory(memoryType)
-  const [searchQuery, setSearchQuery] = useState("")
+  const memoryType = storageKey === 'longTermMemory' ? 'long-term' : 'short-term'
+  const { memory, insertMemory, updateMemory, deleteMemory, searchMemory, isLoading } =
+    useMemory(memoryType)
+  const [searchQuery, setSearchQuery] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
   const { toast } = useToast()
   const [selectedMemory, setSelectedMemory] = useState<MemoryItem | null>(null)
@@ -28,8 +29,8 @@ export const MemoryManager: React.FC<MemoryManagerProps> = ({ title, storageKey 
   const handleInsert = (content: string) => {
     insertMemory(content)
     toast({
-      title: "Memory Inserted",
-      description: "A new memory has been added to the database.",
+      title: 'Memory Inserted',
+      description: 'A new memory has been added to the database.',
     })
   }
 
@@ -41,16 +42,16 @@ export const MemoryManager: React.FC<MemoryManagerProps> = ({ title, storageKey 
   const handleDelete = (id: string) => {
     deleteMemory(id)
     toast({
-      title: "Memory Deleted",
-      description: "The memory has been removed from the database.",
+      title: 'Memory Deleted',
+      description: 'The memory has been removed from the database.',
     })
   }
 
   const handleCopy = (content: string) => {
     navigator.clipboard.writeText(content).then(() => {
       toast({
-        title: "Copied to clipboard",
-        description: "The memory content has been copied to your clipboard.",
+        title: 'Copied to clipboard',
+        description: 'The memory content has been copied to your clipboard.',
       })
     })
   }
@@ -77,11 +78,14 @@ export const MemoryManager: React.FC<MemoryManagerProps> = ({ title, storageKey 
       </div>
       <div className="flex items-center mb-4">
         <div className="relative flex-grow">
-          <Search className="h-4 w-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" aria-hidden="true" />
+          <Search
+            className="h-4 w-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+            aria-hidden="true"
+          />
           <Input
             type="text"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
             placeholder={`Search ${title}`}
             className="pl-8 w-full"
             aria-label={`Search ${title}`}
@@ -99,8 +103,11 @@ export const MemoryManager: React.FC<MemoryManagerProps> = ({ title, storageKey 
           onRowClick={handleRowClick}
         />
       )}
-      <MemoryDetailDialog memory={selectedMemory} open={isDetailOpen} onOpenChange={setIsDetailOpen} />
+      <MemoryDetailDialog
+        memory={selectedMemory}
+        open={isDetailOpen}
+        onOpenChange={setIsDetailOpen}
+      />
     </section>
   )
 }
-

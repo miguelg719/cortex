@@ -1,5 +1,12 @@
-import { Skeleton } from "@/components/ui/skeleton"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
 export function MemoryTableSkeleton() {
   return (
@@ -30,4 +37,4 @@ export function MemoryTableSkeleton() {
       </Table>
     </div>
   )
-} 
+}

@@ -19,7 +19,7 @@ paths:
         '200':
           description: Successful response
           content:
-            application/json:    
+            application/json:
               schema:
                 type: array
                 items:
@@ -42,7 +42,7 @@ paths:
         '201':
           description: Created
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: '#/components/schemas/Memory'
 
@@ -65,7 +65,7 @@ paths:
         '200':
           description: Successful response
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: '#/components/schemas/Memory'
     put:
@@ -92,7 +92,7 @@ paths:
         '200':
           description: Successful response
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: '#/components/schemas/Memory'
     delete:
@@ -113,7 +113,7 @@ paths:
         '200':
           description: Successful response
           content:
-            application/json:    
+            application/json:
               schema:
                 type: object
                 properties:
@@ -132,4 +132,3 @@ components:
         created_at:
           type: string
           format: date-time
-

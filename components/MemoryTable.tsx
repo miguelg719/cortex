@@ -1,8 +1,15 @@
-import { type FC } from "react"
-import type { MemoryItem } from "../hooks/useMemory"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Pencil, Trash, Copy } from "lucide-react"
+import { type FC } from 'react'
+import type { MemoryItem } from '../hooks/useMemory'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { MoreHorizontal, Pencil, Trash, Copy } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,7 +17,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu'
 
 interface MemoryTableProps {
   memories: MemoryItem[]
@@ -20,7 +27,13 @@ interface MemoryTableProps {
   onRowClick: (memory: MemoryItem) => void
 }
 
-export const MemoryTable: FC<MemoryTableProps> = ({ memories, onEdit, onDelete, onCopy, onRowClick }) => {
+export const MemoryTable: FC<MemoryTableProps> = ({
+  memories,
+  onEdit,
+  onDelete,
+  onCopy,
+  onRowClick,
+}) => {
   if (!memories?.length) {
     return <div>No memories found</div>
   }
@@ -36,7 +49,7 @@ export const MemoryTable: FC<MemoryTableProps> = ({ memories, onEdit, onDelete, 
           </TableRow>
         </TableHeader>
         <TableBody>
-          {memories.map((item) => (
+          {memories.map(item => (
             <TableRow
               key={item.id}
               onClick={() => onRowClick(item)}
@@ -63,7 +76,10 @@ export const MemoryTable: FC<MemoryTableProps> = ({ memories, onEdit, onDelete, 
                       <span>Edit</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => onDelete(item.id)} className="dropdown-menu-item-delete">
+                    <DropdownMenuItem
+                      onClick={() => onDelete(item.id)}
+                      className="dropdown-menu-item-delete"
+                    >
                       <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
                       <span>Delete</span>
                     </DropdownMenuItem>
@@ -77,4 +93,3 @@ export const MemoryTable: FC<MemoryTableProps> = ({ memories, onEdit, onDelete, 
     </div>
   )
 }
-

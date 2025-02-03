@@ -1,6 +1,6 @@
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { PlusCircle } from "lucide-react"
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { PlusCircle } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -9,8 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
 
 interface InsertMemoryDialogProps {
   onInsert: (content: string) => void
@@ -19,13 +19,13 @@ interface InsertMemoryDialogProps {
 }
 
 export function InsertMemoryDialog({ onInsert, memoryType }: InsertMemoryDialogProps) {
-  const [content, setContent] = useState("")
+  const [content, setContent] = useState('')
   const [open, setOpen] = useState(false)
 
   const handleInsert = () => {
     if (content.trim()) {
       onInsert(content)
-      setContent("")
+      setContent('')
       setOpen(false)
     }
   }
@@ -50,7 +50,7 @@ export function InsertMemoryDialog({ onInsert, memoryType }: InsertMemoryDialogP
               id="content"
               className="flex min-h-[100px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={e => setContent(e.target.value)}
             />
           </div>
         </div>
@@ -63,4 +63,3 @@ export function InsertMemoryDialog({ onInsert, memoryType }: InsertMemoryDialogP
     </Dialog>
   )
 }
-

@@ -1,7 +1,7 @@
-import type React from "react"
-import { Brain } from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
+import type React from 'react'
+import { Brain } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -33,9 +33,9 @@ export function Layout({ children }: LayoutProps) {
               <Link
                 href="/"
                 className={`block px-4 py-2 text-sm ${
-                  pathname === "/" ? "bg-gray-200 dark:bg-gray-700" : ""
+                  pathname === '/' ? 'bg-gray-200 dark:bg-gray-700' : ''
                 } text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md`}
-                aria-current={pathname === "/" ? "page" : undefined}
+                aria-current={pathname === '/' ? 'page' : undefined}
               >
                 Short-term Memory
               </Link>
@@ -44,9 +44,9 @@ export function Layout({ children }: LayoutProps) {
               <Link
                 href="/long-term"
                 className={`block px-4 py-2 text-sm ${
-                  pathname === "/long-term" ? "bg-gray-200 dark:bg-gray-700" : ""
+                  pathname === '/long-term' ? 'bg-gray-200 dark:bg-gray-700' : ''
                 } text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md`}
-                aria-current={pathname === "/long-term" ? "page" : undefined}
+                aria-current={pathname === '/long-term' ? 'page' : undefined}
               >
                 Long-term Memory
               </Link>
@@ -60,4 +60,3 @@ export function Layout({ children }: LayoutProps) {
     </div>
   )
 }
-

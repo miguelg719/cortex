@@ -1,197 +1,199 @@
-import { NextResponse } from "next/server"
+import { NextResponse } from 'next/server'
 
 const openApiSpec = {
-  openapi: "3.0.0",
+  openapi: '3.0.0',
   info: {
-    title: "Cortex Memory API",
-    version: "1.0.0",
-    description: "API for managing short-term and long-term memories"
+    title: 'Cortex Memory API',
+    version: '1.0.0',
+    description: 'API for managing short-term and long-term memories',
   },
   paths: {
-    "/api/memories": {
+    '/api/memories': {
       get: {
-        summary: "Get memories",
-        parameters: [{
-          name: "type",
-          in: "query",
-          required: true,
-          schema: {
-            type: "string",
-            enum: ["shortTermMemory", "longTermMemory"]
-          }
-        }],
+        summary: 'Get memories',
+        parameters: [
+          {
+            name: 'type',
+            in: 'query',
+            required: true,
+            schema: {
+              type: 'string',
+              enum: ['shortTermMemory', 'longTermMemory'],
+            },
+          },
+        ],
         responses: {
-          "200": {
-            description: "List of memories",
+          '200': {
+            description: 'List of memories',
             content: {
-              "application/json": {
+              'application/json': {
                 schema: {
-                  type: "array",
-                  items: { $ref: "#/components/schemas/Memory" }
-                }
-              }
-            }
-          }
-        }
+                  type: 'array',
+                  items: { $ref: '#/components/schemas/Memory' },
+                },
+              },
+            },
+          },
+        },
       },
       post: {
-        summary: "Create memory",
+        summary: 'Create memory',
         requestBody: {
           required: true,
           content: {
-            "application/json": {
+            'application/json': {
               schema: {
-                type: "object",
-                required: ["type", "content"],
+                type: 'object',
+                required: ['type', 'content'],
                 properties: {
                   type: {
-                    type: "string",
-                    enum: ["short-term", "long-term"]
+                    type: 'string',
+                    enum: ['short-term', 'long-term'],
                   },
-                  content: { type: "string" }
-                }
-              }
-            }
-          }
+                  content: { type: 'string' },
+                },
+              },
+            },
+          },
         },
         responses: {
-          "201": {
-            description: "Memory created",
+          '201': {
+            description: 'Memory created',
             content: {
-              "application/json": {
-                schema: { $ref: "#/components/schemas/Memory" }
-              }
-            }
-          }
-        }
-      }
+              'application/json': {
+                schema: { $ref: '#/components/schemas/Memory' },
+              },
+            },
+          },
+        },
+      },
     },
-    "/api/memories/{id}": {
+    '/api/memories/{id}': {
       get: {
-        summary: "Get memory by ID",
+        summary: 'Get memory by ID',
         parameters: [
           {
-            name: "id",
-            in: "path",
+            name: 'id',
+            in: 'path',
             required: true,
-            schema: { type: "string" }
+            schema: { type: 'string' },
           },
           {
-            name: "type",
-            in: "query",
+            name: 'type',
+            in: 'query',
             required: true,
             schema: {
-              type: "string",
-              enum: ["short-term", "long-term"]
-            }
-          }
+              type: 'string',
+              enum: ['short-term', 'long-term'],
+            },
+          },
         ],
         responses: {
-          "200": {
-            description: "Memory found",
+          '200': {
+            description: 'Memory found',
             content: {
-              "application/json": {
-                schema: { $ref: "#/components/schemas/Memory" }
-              }
-            }
-          }
-        }
+              'application/json': {
+                schema: { $ref: '#/components/schemas/Memory' },
+              },
+            },
+          },
+        },
       },
       put: {
-        summary: "Update memory",
+        summary: 'Update memory',
         parameters: [
           {
-            name: "id",
-            in: "path",
+            name: 'id',
+            in: 'path',
             required: true,
-            schema: { type: "string" }
+            schema: { type: 'string' },
           },
           {
-            name: "type",
-            in: "query",
+            name: 'type',
+            in: 'query',
             required: true,
             schema: {
-              type: "string",
-              enum: ["short-term", "long-term"]
-            }
-          }
+              type: 'string',
+              enum: ['short-term', 'long-term'],
+            },
+          },
         ],
         requestBody: {
           required: true,
           content: {
-            "application/json": {
+            'application/json': {
               schema: {
-                type: "object",
-                required: ["content"],
+                type: 'object',
+                required: ['content'],
                 properties: {
-                  content: { type: "string" }
-                }
-              }
-            }
-          }
+                  content: { type: 'string' },
+                },
+              },
+            },
+          },
         },
         responses: {
-          "200": {
-            description: "Memory updated",
+          '200': {
+            description: 'Memory updated',
             content: {
-              "application/json": {
-                schema: { $ref: "#/components/schemas/Memory" }
-              }
-            }
-          }
-        }
+              'application/json': {
+                schema: { $ref: '#/components/schemas/Memory' },
+              },
+            },
+          },
+        },
       },
       delete: {
-        summary: "Delete memory",
+        summary: 'Delete memory',
         parameters: [
           {
-            name: "id",
-            in: "path",
+            name: 'id',
+            in: 'path',
             required: true,
-            schema: { type: "string" }
+            schema: { type: 'string' },
           },
           {
-            name: "type",
-            in: "query",
+            name: 'type',
+            in: 'query',
             required: true,
             schema: {
-              type: "string",
-              enum: ["short-term", "long-term"]
-            }
-          }
+              type: 'string',
+              enum: ['short-term', 'long-term'],
+            },
+          },
         ],
         responses: {
-          "200": {
-            description: "Memory deleted",
+          '200': {
+            description: 'Memory deleted',
             content: {
-              "application/json": {
+              'application/json': {
                 schema: {
-                  type: "object",
+                  type: 'object',
                   properties: {
-                    success: { type: "boolean" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+                    success: { type: 'boolean' },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   components: {
     schemas: {
       Memory: {
-        type: "object",
+        type: 'object',
         properties: {
-          id: { type: "string" },
-          content: { type: "string" },
-          created_at: { type: "string", format: "date-time" }
-        }
-      }
-    }
-  }
+          id: { type: 'string' },
+          content: { type: 'string' },
+          created_at: { type: 'string', format: 'date-time' },
+        },
+      },
+    },
+  },
 }
 
 export async function GET() {
   return NextResponse.json(openApiSpec)
-} 
+}

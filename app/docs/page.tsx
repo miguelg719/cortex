@@ -1,4 +1,4 @@
-"use client"
+'use client'
 import { RedocStandalone } from 'redoc'
 import { useEffect, useState } from 'react'
 
@@ -20,8 +20,8 @@ export default function ApiDocs() {
         theme: {
           colors: {
             primary: {
-              main: '#000000'
-            }
+              main: '#000000',
+            },
           },
           typography: {
             fontFamily: 'Inter, system-ui, sans-serif',
@@ -32,4 +32,4 @@ export default function ApiDocs() {
       }}
     />
   )
-} 
+}

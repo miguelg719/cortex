@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback } from 'react'
 
 export interface MemoryItem {
   id: string
@@ -7,10 +7,10 @@ export interface MemoryItem {
 }
 
 // Create a cache outside the hook to persist between renders
-const memoryCache: Record<string, { data: MemoryItem[], timestamp: number }> = {}
+const memoryCache: Record<string, { data: MemoryItem[]; timestamp: number }> = {}
 const CACHE_DURATION = 10000 // Cache duration in milliseconds (10 seconds)
 
-export function useMemory(type: "short-term" | "long-term") {
+export function useMemory(type: 'short-term' | 'long-term') {
   const [memory, setMemory] = useState<MemoryItem[]>(() => {
     // Initialize from cache if available
     const cached = memoryCache[type]
@@ -34,11 +34,11 @@ export function useMemory(type: "short-term" | "long-term") {
 
       setIsLoading(true)
       try {
-        const apiType = type === "long-term" ? "longTermMemory" : "shortTermMemory"
+        const apiType = type === 'long-term' ? 'longTermMemory' : 'shortTermMemory'
         const response = await fetch(`/api/memories?type=${apiType}`)
         if (!response.ok) throw new Error('Failed to fetch memories')
         const data = await response.json()
-        
+
         // Update cache
         memoryCache[type] = { data, timestamp: Date.now() }
         setMemory(data)
@@ -55,70 +55,71 @@ export function useMemory(type: "short-term" | "long-term") {
 
   const insertMemory = async (content: string) => {
     try {
-      const apiType = type === "long-term" ? "long-term" : "short-term"
-      const response = await fetch("/api/memories", {
-        method: "POST",
+      const apiType = type === 'long-term' ? 'long-term' : 'short-term'
+      const response = await fetch('/api/memories', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ type: apiType, content }),
       })
       if (!response.ok) {
-        throw new Error("Failed to insert memory")
+        throw new Error('Failed to insert memory')
       }
       const newMemory = await response.json()
-      
+
       // Update both state and cache
       const newMemories = [newMemory, ...memory]
       setMemory(newMemories)
       memoryCache[type] = { data: newMemories, timestamp: Date.now() }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+      setError(err instanceof Error ? err.message : 'An error occurred')
     }
   }
 
   const updateMemory = async (id: string, content: string) => {
     try {
       const response = await fetch(`/api/memories/${id}?type=${type}`, {
-        method: "PUT",
+        method: 'PUT',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({ type: type, content }),
       })
       if (!response.ok) {
-        throw new Error("Failed to update memory")
+        throw new Error('Failed to update memory')
       }
       const updatedMemory = await response.json()
-      setMemory((prev) => prev.map((item) => (item.id === id ? updatedMemory : item)))
+      setMemory(prev => prev.map(item => (item.id === id ? updatedMemory : item)))
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+      setError(err instanceof Error ? err.message : 'An error occurred')
     }
   }
 
   const deleteMemory = async (id: string) => {
     try {
       const response = await fetch(`/api/memories/${id}?type=${type}`, {
-        method: "DELETE",
+        method: 'DELETE',
       })
       if (!response.ok) {
-        throw new Error("Failed to delete memory")
+        throw new Error('Failed to delete memory')
       }
-      
+
       // Update both state and cache
-      const newMemories = memory.filter((item) => item.id !== id)
+      const newMemories = memory.filter(item => item.id !== id)
       setMemory(newMemories)
       memoryCache[type] = { data: newMemories, timestamp: Date.now() }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+      setError(err instanceof Error ? err.message : 'An error occurred')
     }
   }
 
-  const searchMemory = useCallback((query: string) => {
-    return memory.filter((item) => 
-      item.content.toLowerCase().includes(query.toLowerCase())
-    )
-  }, [memory])
+  const searchMemory = useCallback(
+    (query: string) => {
+      return memory.filter(item => item.content.toLowerCase().includes(query.toLowerCase()))
+    },
+    [memory]
+  )
 
   return {
     memory,
@@ -130,4 +131,3 @@ export function useMemory(type: "short-term" | "long-term") {
     searchMemory,
   }
 }
-
