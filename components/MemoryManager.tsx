@@ -1,5 +1,5 @@
 import type React from 'react'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useMemory } from '../hooks/useMemory'
 import { MemoryTable } from './MemoryTable'
 import { InsertMemoryDialog } from './InsertMemoryDialog'
@@ -18,7 +18,7 @@ interface MemoryManagerProps {
 
 export const MemoryManager: React.FC<MemoryManagerProps> = ({ title, storageKey }) => {
   const memoryType = storageKey === 'longTermMemory' ? 'long-term' : 'short-term'
-  const { memory, insertMemory, updateMemory, deleteMemory, searchMemory, isLoading } =
+  const { memory, insertMemory, updateMemory, deleteMemory, searchMemory, isLoading, searchResults, isSearching } =
     useMemory(memoryType)
   const [searchQuery, setSearchQuery] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -36,7 +36,6 @@ export const MemoryManager: React.FC<MemoryManagerProps> = ({ title, storageKey 
 
   const handleEdit = (id: string) => {
     setEditingId(id)
-    // Implement edit functionality here
   }
 
   const handleDelete = (id: string) => {
@@ -61,11 +60,19 @@ export const MemoryManager: React.FC<MemoryManagerProps> = ({ title, storageKey 
     setIsDetailOpen(true)
   }
 
-  const filteredMemory = searchQuery ? searchMemory(searchQuery) : memory
+  const handleSearch = useCallback(
+    async (value: string) => {
+      setSearchQuery(value)
+      await searchMemory(value)
+    },
+    [searchMemory]
+  )
+
+  const displayedMemories = searchQuery.trim() ? searchResults : memory
 
   return (
     <section aria-labelledby={`${storageKey}-title`}>
-      <div className="flex justify-between items-center mb-4 bg-white">
+      <div className="flex justify-between items-center mb-4 bg-white dark:bg-gray-800">
         <h2 id={`${storageKey}-title`} className="text-2xl font-bold text-gray-900 dark:text-white">
           {title}
         </h2>
@@ -85,18 +92,18 @@ export const MemoryManager: React.FC<MemoryManagerProps> = ({ title, storageKey 
           <Input
             type="text"
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             placeholder={`Search ${title}`}
             className="pl-8 w-full"
             aria-label={`Search ${title}`}
           />
         </div>
       </div>
-      {isLoading ? (
+      {isLoading || isSearching ? (
         <MemoryTableSkeleton />
       ) : (
         <MemoryTable
-          memories={filteredMemory}
+          memories={displayedMemories}
           onEdit={handleEdit}
           onDelete={handleDelete}
           onCopy={handleCopy}

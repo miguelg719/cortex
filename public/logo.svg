@@ -1,0 +1,17 @@
+<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M350 150 L250 150 L150 150 L150 250 L150 350 L250 350 L350 350 M150 250 L100 250 M350 150 L400 150 M350 350 L400 350" 
+    stroke="currentColor" 
+    stroke-width="20" 
+    stroke-linecap="round"
+  />
+  <circle cx="150" cy="150" r="8" fill="currentColor"/>
+  <circle cx="150" cy="250" r="8" fill="currentColor"/>
+  <circle cx="150" cy="350" r="8" fill="currentColor"/>
+  <circle cx="250" cy="150" r="8" fill="currentColor"/>
+  <circle cx="250" cy="350" r="8" fill="currentColor"/>
+  <circle cx="350" cy="150" r="8" fill="currentColor"/>
+  <circle cx="350" cy="350" r="8" fill="currentColor"/>
+  <circle cx="100" cy="250" r="8" fill="currentColor"/>
+  <circle cx="400" cy="150" r="8" fill="currentColor"/>
+  <circle cx="400" cy="350" r="8" fill="currentColor"/>
+</svg> 

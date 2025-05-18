@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
+import { searchAllMemories, generateEmbeddings, type SearchResult } from '@/lib/embeddings'
 
 export interface MemoryItem {
   id: string
   content: string
   created_at: string
+  similarity?: number
+  type?: 'short-term' | 'long-term'
 }
 
 // Create a cache outside the hook to persist between renders
@@ -21,6 +24,8 @@ export function useMemory(type: 'short-term' | 'long-term') {
   })
   const [isLoading, setIsLoading] = useState(!memoryCache[type])
   const [error, setError] = useState<string | null>(null)
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([])
+  const [isSearching, setIsSearching] = useState(false)
 
   useEffect(() => {
     const fetchMemories = async () => {
@@ -67,6 +72,13 @@ export function useMemory(type: 'short-term' | 'long-term') {
         throw new Error('Failed to insert memory')
       }
       const newMemory = await response.json()
+
+      // Generate embeddings for the new memory
+      await generateEmbeddings(
+        `${apiType}_memories`,
+        newMemory.id,
+        content
+      )
 
       // Update both state and cache
       const newMemories = [newMemory, ...memory]
@@ -115,8 +127,24 @@ export function useMemory(type: 'short-term' | 'long-term') {
   }
 
   const searchMemory = useCallback(
-    (query: string) => {
-      return memory.filter(item => item.content.toLowerCase().includes(query.toLowerCase()))
+    async (query: string) => {
+      if (!query.trim()) {
+        setSearchResults([])
+        return memory
+      }
+
+      setIsSearching(true)
+      try {
+        const results = await searchAllMemories(query)
+        setSearchResults(results)
+        return results
+      } catch (error) {
+        console.error('Search error:', error)
+        setSearchResults([])
+        return memory
+      } finally {
+        setIsSearching(false)
+      }
     },
     [memory]
   )
@@ -124,10 +152,12 @@ export function useMemory(type: 'short-term' | 'long-term') {
   return {
     memory,
     isLoading,
+    isSearching,
     error,
     insertMemory,
     updateMemory,
     deleteMemory,
     searchMemory,
+    searchResults,
   }
 }

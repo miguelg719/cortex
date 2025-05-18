@@ -41,14 +41,37 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Content is required' }, { status: 400 })
   }
 
-  const { data, error } = await supabase
-    .from(type === 'short-term' ? 'short_term_memories' : 'long_term_memories')
-    .insert({ content })
-    .select()
+  try {
+    // First, generate the embedding
+    const embeddingResponse = await fetch('http://localhost:54321/functions/v1/embed', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ input: content }),
+    })
 
-  if (error) {
+    if (!embeddingResponse.ok) {
+      throw new Error('Failed to generate embedding')
+    }
+
+    const { embedding } = await embeddingResponse.json()
+
+    // Then insert the memory with the embedding
+    const tableName = type === 'short-term' ? 'short_term_memories' : 'long_term_memories'
+    const { data, error } = await supabase
+      .from(tableName)
+      .insert({ content, embedding })
+      .select()
+
+    if (error) {
+      throw error
+    }
+
+    return NextResponse.json(data[0], { status: 201 })
+  } catch (error: any) {
+    console.error('Error creating memory:', error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
-
-  return NextResponse.json(data[0], { status: 201 })
 }

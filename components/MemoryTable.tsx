@@ -38,6 +38,9 @@ export const MemoryTable: FC<MemoryTableProps> = ({
     return <div>No memories found</div>
   }
 
+  // Check if we're showing search results (items with similarity scores)
+  const hasSearchResults = memories.some(item => 'similarity' in item)
+
   return (
     <div className="rounded-md border border-gray-200 dark:border-gray-700">
       <Table>
@@ -45,6 +48,9 @@ export const MemoryTable: FC<MemoryTableProps> = ({
           <TableRow>
             <TableHead className="w-[100px]">ID</TableHead>
             <TableHead>Content</TableHead>
+            {hasSearchResults && (
+              <TableHead className="w-[100px]">Similarity</TableHead>
+            )}
             <TableHead className="w-[100px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -57,6 +63,14 @@ export const MemoryTable: FC<MemoryTableProps> = ({
             >
               <TableCell className="font-medium">{item.id}</TableCell>
               <TableCell>{item.content}</TableCell>
+              {hasSearchResults && (
+                <TableCell>
+                  {item.similarity !== undefined ? 
+                    `${(item.similarity * 100).toFixed(1)}%` : 
+                    '-'
+                  }
+                </TableCell>
+              )}
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

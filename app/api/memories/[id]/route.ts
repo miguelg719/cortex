@@ -40,9 +40,26 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   const tableName = type === 'long-term' ? 'long_term_memories' : 'short_term_memories'
 
   try {
+    // First, generate new embedding for the updated content
+    const embeddingResponse = await fetch('http://localhost:54321/functions/v1/embed', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ input: content }),
+    })
+
+    if (!embeddingResponse.ok) {
+      throw new Error('Failed to generate embedding')
+    }
+
+    const { embedding } = await embeddingResponse.json()
+
+    // Update both content and embedding
     const { data, error } = await supabase
       .from(tableName)
-      .update({ content })
+      .update({ content, embedding })
       .eq('id', id)
       .select()
       .single()
@@ -51,6 +68,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
     return NextResponse.json(data)
   } catch (error) {
+    console.error('Error updating memory:', error)
     return NextResponse.json({ error: 'Failed to update memory' }, { status: 500 })
   }
 }
